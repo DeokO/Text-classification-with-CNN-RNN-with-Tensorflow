@@ -22,7 +22,7 @@ Tensorflow를 이용해 한글 text classifier를 CNN, RNN을 이용해 만든 �
 
 ## Ch02_TextCNN
 Model: 자소 단위의 input을 받는 ***CNN text classifier***
-1. Text_CNN_config.py:
+1. [Text_CNN_config.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch02_TextCNN/Text_CNN_config.py):
     - model과 관련한 hyper-parameter 정의
 2. Text_CNN_model.py:
     - model class
