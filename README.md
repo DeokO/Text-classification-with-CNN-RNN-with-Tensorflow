@@ -21,7 +21,9 @@ Text classification with CNN, RNN, RCNN model by character, word level
 5. [utils.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch01_Data_load/utils.py): layers, batch generate, tokenizer 등 사용할 함수 정의
 
 ## Ch02_TextCNN
-Model: ***character level CNN text classifier***
+***character level CNN text classifier***
+자소 단위의 input을 받는 CNN text classifier
+인터넷의 언어 파괴적 문서, 오타 등에 강건한 모형
 1. [Text_CNN_config.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch02_TextCNN/Text_CNN_config.py):
     - model과 관련한 hyper-parameter 정의
 2. [Text_CNN_model.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch02_TextCNN/Text_CNN_model.py):
@@ -32,7 +34,10 @@ Model: ***character level CNN text classifier***
     - 학습된 모형에 test data를 적용해 성능지표 산출
 
 ## Ch03_TextRNN
-Model: ***character level RNN text classifier***
+***character level RNN text classifier***
+자소 단위의 input을 받는 RNN text classifier
+불필요하게 sequence를 길게한 탓인지, 자소 단위의 RNN은 학습이 잘 되지 않음
+(이에 대한 원인을 알고 있으신 분이 있으시면 메일 부탁드립니다.)
 1. [Text_RNN_config.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch03_TextRNN/Text_RNN_config.py):
     - model과 관련한 hyper-parameter 정의
 2. [Text_RNN_model.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch03_TextRNN/Text_RNN_model.py):
@@ -44,6 +49,7 @@ Model: ***character level RNN text classifier***
 
 ## Ch04_TextRNN_word
 Model: ***word level RNN text classifier***
+단어 단위의 input을 받는 RNN text classifier
 1. [Text_RNN_word_config.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch04_TextRNN_word/Text_RNN_word_config.py):
     - model과 관련한 hyper-parameter 정의
 2. [Text_RNN_word_model.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch04_TextRNN_word/Text_RNN_word_model.py):
@@ -55,6 +61,7 @@ Model: ***word level RNN text classifier***
 
 ## Ch05_TextRNN_word_attention
 Model: ***word level RNN text classifier with attention***
+단어 단위의 input을 받는 RNN text classifier **+ attention**
 1. [Text_RNN_word_attention_config.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch05_TextRNN_word_attention/Text_RNN_word_attention_config.py):
     - model과 관련한 hyper-parameter 정의
 2. [Text_RNN_word_attention_model.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch05_TextRNN_word_attention/Text_RNN_word_attention_model.py):
