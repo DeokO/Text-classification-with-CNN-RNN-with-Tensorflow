@@ -29,7 +29,11 @@ Model: 자소 단위의 input을 받는 CNN text classifier
 
 ## Ch03_TextRNN
 Model: 자소 단위의 input을 받는 RNN text classifier
-1. Text_RNN_config.py: model과 관련한 hyper-parameter 정의
-2. Text_RNN_model.py: model class
-3. Text_RNN_train.py: 모형을 학습하고, tensorboard로 summary를 확인 및 학습된 파라미터 저장
-4. Text_RNN_predict.py: 학습된 모형에 test data를 적용해 성능지표 산출
+1. Text_RNN_config.py:
+    - model과 관련한 hyper-parameter 정의
+2. Text_RNN_model.py:
+    - model class
+3. Text_RNN_train.py:
+    - 모형을 학습하고, tensorboard로 summary를 확인 및 학습된 파라미터 저장
+4. Text_RNN_predict.py:
+    - 학습된 모형에 test data를 적용해 성능지표 산출
