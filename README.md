@@ -21,7 +21,8 @@ Tensorflow를 이용해 한글 text classifier를 CNN, RNN을 이용해 만든 �
 5. utils.py: layers, batch generate, tokenizer 등 사용할 함수 정의
 
 ## Ch02_TextCNN
-Model: 자소 단위의 input을 받는 **CNN** text classifier
+Model: 자소 단위의 input을 받는 **CNN** text classifier 
+자소 단위 접근시 전처리를 최소화 할 수 있으며, 오타 및 인터넷의 언어 파괴적인 corpus에 강건한 모형을 만들 수 있다는 장점 확보
 1. Text_CNN_config.py:
     - model과 관련한 hyper-parameter 정의
 2. Text_CNN_model.py:
@@ -33,6 +34,7 @@ Model: 자소 단위의 input을 받는 **CNN** text classifier
 
 ## Ch03_TextRNN
 Model: 자소 단위의 input을 받는 **RNN** text classifier
+자소 단위 접근시 전처리를 최소화 할 수 있으며, 오타 및 인터넷의 언어 파괴적인 corpus에 강건한 모형을 만들 수 있다는 장점 확보
 1. Text_RNN_config.py:
     - model과 관련한 hyper-parameter 정의
 2. Text_RNN_model.py:
