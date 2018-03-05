@@ -52,3 +52,14 @@ Model: ***word level RNN text classifier***
     - 모형을 학습하고, tensorboard로 summary를 확인 및 학습된 파라미터 저장
 4. [Text_RNN_word_predict.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch04_TextRNN_word/Text_RNN_word_train.py):
     - 학습된 모형에 test data를 적용해 성능지표 산출
+
+## Ch05_TextRNN_word_attention
+Model: ***word level RNN text classifier with attention***
+1. [Text_RNN_word_attention_config.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch05_TextRNN_word_attention/Text_RNN_word_attention_config.py):
+    - model과 관련한 hyper-parameter 정의
+2. [Text_RNN_word_attention_model.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch05_TextRNN_word_attention/Text_RNN_word_attention_model.py):
+    - model class
+3. [Text_RNN_word_attention_train.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch05_TextRNN_word_attention/Text_RNN_word_attention_train.py):
+    - 모형을 학습하고, tensorboard로 summary를 확인 및 학습된 파라미터 저장
+4. [Text_RNN_word_attention_predict.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch05_TextRNN_word_attention/Text_RNN_word_attention_train.py):
+    - 학습된 모형에 test data를 적용해 성능지표 산출
