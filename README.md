@@ -7,6 +7,7 @@ Tensorflow를 이용해 한글 text classifier를 CNN, RNN을 이용해 만든 �
 
 ## Ch01_Data_load
 **data link: https://drive.google.com/open?id=1vdvedBSAcVU8Dbjzuow6cL_9Tkc9zGVM**
+
 (전에 공부용으로 수집한 데이터 인데, 문제될 경우 내리겠습니다.) -출처: W 영화 사이트
 1. data_preprocessing.py: 텍스트 기본 전처리 진행
     - 특수문자 제거
