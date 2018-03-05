@@ -6,7 +6,7 @@ Text classification with CNN, RNN, RCNN model by character, word level
 Tensorflow를 이용해 한글 text classifier를 CNN, RNN을 이용해 만든 내용입니다.
 
 ## Ch01_Data_load
-**data link: https://drive.google.com/open?id=1vdvedBSAcVU8Dbjzuow6cL_9Tkc9zGVM**
+# data link: https://drive.google.com/open?id=1vdvedBSAcVU8Dbjzuow6cL_9Tkc9zGVM
 
 (전에 공부용으로 수집한 데이터 인데, 문제될 경우 내리겠습니다.) -출처: W 영화 사이트
 1. data_preprocessing.py: 텍스트 기본 전처리 진행
@@ -21,8 +21,7 @@ Tensorflow를 이용해 한글 text classifier를 CNN, RNN을 이용해 만든 �
 5. utils.py: layers, batch generate, tokenizer 등 사용할 함수 정의
 
 ## Ch02_TextCNN
-Model: 자소 단위의 input을 받는 **CNN** text classifier 
-자소 단위 접근시 전처리를 최소화 할 수 있으며, 오타 및 인터넷의 언어 파괴적인 corpus에 강건한 모형을 만들 수 있다는 장점 확보
+# Model: 자소 단위의 input을 받는 **CNN** text classifier 
 1. Text_CNN_config.py:
     - model과 관련한 hyper-parameter 정의
 2. Text_CNN_model.py:
@@ -33,8 +32,7 @@ Model: 자소 단위의 input을 받는 **CNN** text classifier
     - 학습된 모형에 test data를 적용해 성능지표 산출
 
 ## Ch03_TextRNN
-Model: 자소 단위의 input을 받는 **RNN** text classifier
-자소 단위 접근시 전처리를 최소화 할 수 있으며, 오타 및 인터넷의 언어 파괴적인 corpus에 강건한 모형을 만들 수 있다는 장점 확보
+# Model: 자소 단위의 input을 받는 **RNN** text classifier
 1. Text_RNN_config.py:
     - model과 관련한 hyper-parameter 정의
 2. Text_RNN_model.py:
