@@ -8,8 +8,7 @@ Text classification with CNN, RNN, RCNN model by character, word level
 
 ## Ch01_Data_load
 ***data link: https://drive.google.com/open?id=1vdvedBSAcVU8Dbjzuow6cL_9Tkc9zGVM***
-
-(전에 공부용으로 수집한 데이터 인데, 문제될 경우 내리겠습니다.) -출처: W 영화 사이트
+-출처: W 영화 사이트
 1. [data_preprocessing.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch01_Data_load/data_preprocessing.py): 텍스트 기본 전처리 진행
     - 특수문자 제거
     - corpus의 문장 길이 10분위수 ~ 95분위수만 사용
