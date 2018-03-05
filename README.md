@@ -72,7 +72,8 @@ Text classification with CNN, RNN, RCNN model by character, word level
     - 학습된 모형에 test data를 적용해 성능지표 산출
 
 ## Ch06_TextRCNN_word_attention
-Model: ***word level RCNN text classifier with attention***
+***word level RCNN text classifier with attention***
++ 단어 단위의 input을 받는 CNN+RNN text classifier **+ attention**
 1. [Text_RCNN_word_attention_config.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch06_TextRCNN_word_attention/Text_RCNN_word_attention_config.py):
     - model과 관련한 hyper-parameter 정의
 2. [Text_RCNN_word_attention_model.py](https://github.com/DeokO/Text-classification-with-CNN-RNN-with-Tensorflow/blob/master/Ch06_TextRCNN_word_attention/Text_RCNN_word_attention_model.py):
