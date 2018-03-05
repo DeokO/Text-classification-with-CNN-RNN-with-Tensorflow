@@ -2,8 +2,8 @@
 Text classification with CNN, RNN, RCNN model by character, word level
 
 -----------------------------------------------------------
-
-Tensorflow를 이용해 한글 text classifier를 CNN, RNN을 이용해 만든 내용입니다.
+**Tensorflow**
+**한글 text classifier를 convolutional, recurrent layer를 이용해 만든 모형 예**
 
 ## Ch01_Data_load
 ***data link: https://drive.google.com/open?id=1vdvedBSAcVU8Dbjzuow6cL_9Tkc9zGVM***
