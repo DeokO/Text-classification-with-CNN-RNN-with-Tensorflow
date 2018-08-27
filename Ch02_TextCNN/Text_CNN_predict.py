@@ -27,7 +27,7 @@ from Ch02_TextCNN.Text_CNN_model import *
 # DATA LOAD
 ################################################################################
 TRAIN_DOC, TRAIN_LABEL, TRAIN_LABEL_POS, TRAIN_LABEL_NEG, TEST_DOC, TEST_LABEL, TEST_LABEL_POS, TEST_LABEL_NEG = data_load.data_load()
-JM = utils.lookup_JM(FLAGS.MAXLEN, FLAGS.INPUT_WIDTH, FLAGS.INPUT_DEPTH)
+JM = utils.lookup_JM(FLAGS.INPUT_WIDTH, FLAGS.INPUT_DEPTH)
 FLAGS.WRITER_generate = False
 
 
@@ -61,7 +61,7 @@ LOGIT_list = np.empty([0, 2])
 LABEL_list = np.empty([0, 2])
 for i in range(int(len(TEST_DOC) / FLAGS.TEST_BATCH)+1):
     index = np.unique(np.clip(np.arange(i * FLAGS.TEST_BATCH, (i + 1) * FLAGS.TEST_BATCH), a_min=0, a_max=len(TEST_DOC) - 1))
-    jaso_splitted = jmu.jaso_split(TEST_DOC[index], MAXLEN=FLAGS.MAXLEN)
+    jaso_splitted = jmu.jaso_split(TEST_DOC[index], MAXLEN=FLAGS.INPUT_WIDTH)
     batch_input = sess.run(model.jaso_Onehot, {model.X_Onehot: jaso_splitted})
     batch_label = TEST_LABEL[index]
     ts_acc, y_logit = sess.run([model.accuracy, model.y_logits],
@@ -84,6 +84,6 @@ print('AUROC: {},        acc: {} '.format(metrics.auc(fpr, tpr), (cm[0, 0]+cm[1,
 
 
 
-# [[76052 17949]
-#  [12203 42895]]
-# AUROC: 0.793788564619032,        acc: 0.7977719501807524
+# [[37796  4021]
+#  [ 3963 28769]]
+# AUROC: 0.8913843782586843,        acc: 0.8929026546298408
