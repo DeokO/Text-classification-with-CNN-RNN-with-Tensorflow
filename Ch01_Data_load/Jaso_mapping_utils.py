@@ -114,8 +114,7 @@ def jaso_split(DOCUMENT, MAXLEN=93):
 
 class JasoMapping():
     #생성자
-    def __init__(self, MAXLEN, WIDTH, DEPTH, MAPPING_KEY, MAPPING_VALUE):
-        self.MAXLEN = MAXLEN
+    def __init__(self, WIDTH, DEPTH, MAPPING_KEY, MAPPING_VALUE):
         self.WIDTH = WIDTH
         self.DEPTH = DEPTH
         self.MAPPING_KEY = MAPPING_KEY
@@ -147,33 +146,36 @@ class JasoMapping():
 # ###############################################################
 # #HYPER PARAMETER
 # ###############################################################
-# MAXLEN = 256
-# IMAGE_WIDTH = 256
-# IMAGE_HEIGHT = 1
+# WIDTH = 256
 # DEPTH = 93
-#
+# 
 # ###############################################################
 # #DATA LOAD
 # ###############################################################
-# DATA_PATH = './data/watcha_samp.csv'
+# import pandas as pd
+# DATA_PATH = './Ch01_Data_load/data/w_movie.csv'
 # data = pd.read_csv(DATA_PATH, encoding='cp949')
 # DOCUMENT = data.review_text
 # POINT = data.review_point
-#
+# 
 # #lookup table dictionary
-# MAPPING_PATH = './data/dict.csv'
+# MAPPING_PATH = './Ch01_Data_load/data/dict.csv'
 # lookup = pd.read_csv(MAPPING_PATH, encoding='cp949')
 # keys = list(lookup.iloc[:, 0])
 # values = list(lookup.iloc[:, 1])
-#
-#
-# JM = JasoMapping(MAXLEN=MAXLEN, WIDTH=IMAGE_WIDTH, HEIGHT=IMAGE_HEIGHT, DEPTH=DEPTH, MAPPING_KEY=keys, MAPPING_VALUE=values)
-# X = tf.placeholder(dtype=tf.string, shape=[None, MAXLEN])
-#
-# vv = jaso_split(DOCUMENT[:128], MAXLEN=MAXLEN)
+# 
+# 
+# JM = JasoMapping(WIDTH=WIDTH, DEPTH=DEPTH, MAPPING_KEY=keys, MAPPING_VALUE=values)
+# X = tf.placeholder(dtype=tf.string, shape=[None, WIDTH])
+# 
+# splited = jaso_split(DOCUMENT[:128], MAXLEN=WIDTH)
+# np.shape(splited)
+# print(splited[1])
 # sess = tf.Session()
 # JM.init_table(sess)
-# vvv = JM.string_to_index(X)
+# INDEX_onehot = JM.string_to_index(X)
 # tmpv = JM.indices
-# tmp = sess.run(vvv, {X: vv})
-
+# tmpv_run = sess.run(tmpv, {X: splited})
+# np.shape(tmpv_run)
+# tmp = sess.run(INDEX_onehot, {X: splited})
+# np.shape(tmp)
