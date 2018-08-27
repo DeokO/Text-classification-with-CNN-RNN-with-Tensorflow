@@ -36,7 +36,7 @@ cleand_text = list(map(lambda x: clean_str(str(x)), data[:, 0]))
 data[:, 0] = cleand_text
 
 # Delete short sentences
-document_length = [len(x.split(" ")) for x in data[:, 0]]
+document_length = [len(str(x).split(" ")) for x in data[:, 0]]
 lb = int(np.percentile(document_length, 10))
 ub = int(np.percentile(document_length, 95))
 data = data[(np.array(document_length) > lb) & (np.array(document_length) < ub), :]
