@@ -91,9 +91,10 @@ def split_syllables(string):
 # jaso mapping class
 ###############################################################
 #Jaso split function
-def jaso_split(DOCUMENT, MAXLEN=93):
+def jaso_split(DOCUMENT, MAXLEN=256): # 자소로 나눈 다음 95분위수에 해당하는 개수 166 보다 큰 256으로 설정
     doc = DOCUMENT
     JASO_RESULT = []
+    # lens = []
     for i in np.arange(len(doc)):
 
         jamo = split_syllables(doc[i])
@@ -107,8 +108,9 @@ def jaso_split(DOCUMENT, MAXLEN=93):
             jamo = jamo[:MAXLEN]
 
         JASO_RESULT.append(jamo)
+        # lens.append(length)
 
-    return JASO_RESULT
+    return JASO_RESULT #, lens
 
 
 
@@ -148,7 +150,7 @@ class JasoMapping():
 # ###############################################################
 # WIDTH = 256
 # DEPTH = 93
-# 
+#
 # ###############################################################
 # #DATA LOAD
 # ###############################################################
@@ -157,20 +159,20 @@ class JasoMapping():
 # data = pd.read_csv(DATA_PATH, encoding='cp949')
 # DOCUMENT = data.review_text
 # POINT = data.review_point
-# 
+#
 # #lookup table dictionary
 # MAPPING_PATH = './Ch01_Data_load/data/dict.csv'
 # lookup = pd.read_csv(MAPPING_PATH, encoding='cp949')
 # keys = list(lookup.iloc[:, 0])
 # values = list(lookup.iloc[:, 1])
-# 
-# 
+#
+#
 # JM = JasoMapping(WIDTH=WIDTH, DEPTH=DEPTH, MAPPING_KEY=keys, MAPPING_VALUE=values)
 # X = tf.placeholder(dtype=tf.string, shape=[None, WIDTH])
-# 
+#
 # splited = jaso_split(DOCUMENT[:128], MAXLEN=WIDTH)
 # np.shape(splited)
-# print(splited[1])
+# print(splited[0])
 # sess = tf.Session()
 # JM.init_table(sess)
 # INDEX_onehot = JM.string_to_index(X)
