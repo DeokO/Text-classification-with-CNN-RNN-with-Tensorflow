@@ -1,0 +1,16 @@
+absl-py==0.4.0
+astor==0.7.1
+gast==0.2.0
+grpcio==1.14.1
+numpy==1.14.5
+pandas==0.23.4
+protobuf==3.6.1
+psutil==5.4.7
+python-dateutil==2.7.3
+pytz==2018.5
+six==1.11.0
+soynlp==0.0.46
+tensorboard==1.10.0
+tensorflow==1.10.0
+termcolor==1.1.0
+Werkzeug==0.14.1
