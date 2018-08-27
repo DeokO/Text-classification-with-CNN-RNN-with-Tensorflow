@@ -52,7 +52,7 @@ class MODEL():
     # Set placeholder
     ########################################################
     def set_placeholders(self):
-        self.X_Onehot = tf.placeholder(dtype=tf.string, shape=[None, FLAGS.MAXLEN])
+        self.X_Onehot = tf.placeholder(dtype=tf.string, shape=[None, FLAGS.INPUT_WIDTH])
         self.X = tf.placeholder(tf.float32, [None, FLAGS.INPUT_WIDTH, FLAGS.INPUT_DEPTH])
         self.Y = tf.placeholder(tf.float32, [None, FLAGS.NUM_OF_CLASS])
         self.LEARNING_RATE = tf.placeholder(tf.float32)
@@ -74,7 +74,7 @@ class MODEL():
                 # 1d-conv
                 net = utils.conv_1d(net, width, FLAGS.HIDDEN_DIMENSION, self.TRAIN_PH)
                 # 1d-max pool
-                if i % 2 == 1:
+                if i % 2 == 0:
                     net = tf.layers.max_pooling1d(net, pool_size=2, strides=2, padding='SAME')
 
 
@@ -82,8 +82,8 @@ class MODEL():
         # Reshape
         ##########################################
         self.Activation = net
-        self.GAP = tf.layers.average_pooling1d(self.Activation, pool_size=self.Activation.get_shape().as_list()[1],
-                                               strides=self.Activation.get_shape().as_list()[1], padding='SAME')
+        self.GAP = tf.reduce_mean(self.Activation, axis=2)
+
 
         ##########################################
         # Fully connected network
