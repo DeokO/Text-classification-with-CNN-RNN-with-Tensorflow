@@ -12,7 +12,6 @@
 # Import modules
 #####################################
 import numpy as np
-from Ch01_Data_load import utils
 
 
 
@@ -31,7 +30,8 @@ def label_to_onehot(label):
 # Data load
 def data_load(onehot=True):
     data = np.load('./Ch01_Data_load/data/w_movie.npy')
-    tr_cut = np.round(len(data) * 0.8).astype(np.int32)
+    np.random.shuffle(data)
+    tr_cut = np.round(len(data) * 0.9).astype(np.int32)
     TRAIN_DOC, TRAIN_LABEL, TEST_DOC, TEST_LABEL = data[:tr_cut, 0], data[:tr_cut, 1], data[tr_cut:, 0], data[tr_cut:, 1]
 
     # 작은 데이터로 OVERFITTING 시키기 위한 실험용
