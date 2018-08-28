@@ -22,7 +22,6 @@ import numpy as np
 # Input data
 flags.DEFINE_string('Vocab_Processor_PATH', './Ch01_Data_load/data/VocabularyProcessor', 'VocabularyProcessor object file path')
 flags.DEFINE_integer('VOCAB_SIZE', 72844, 'The number of terms in vocabulary')
-flags.DEFINE_integer('INPUT_WIDTH', 22, 'document size')
 flags.DEFINE_integer('EMBEDDING_SIZE', 256, 'Dimension of embedded terms')
 flags.DEFINE_integer('MAXLEN', 22, 'max length of document')
 
@@ -31,7 +30,7 @@ flags.DEFINE_integer('NUM_OF_CLASS', 2, 'positive, negative')
 
 # Parameter
 flags.DEFINE_integer('HIDDEN_DIMENSION', 256, 'CNN hidden dimension')
-flags.DEFINE_integer('CONV_KERNEL_WIDTH', [3, 3], 'kernel height')
+flags.DEFINE_multi_integer('CONV_KERNEL_WIDTH', [19, 13], 'kernel height')
 flags.DEFINE_integer('RNN_HIDDEN_DIMENSION', 256, 'RNN hidden dimension')
 flags.DEFINE_integer('ATTENTION_SIZE', 100, 'attention dimension')
 flags.DEFINE_integer('FC_HIDDEN_DIMENSION', 256, 'FC hidden dimension')
@@ -46,11 +45,11 @@ flags.DEFINE_boolean('WRITER_generate', True, 'saver generate')
 # Train
 flags.DEFINE_integer('BATCH_SIZE', 128, 'batch size')
 flags.DEFINE_integer('TEST_BATCH', 128, 'test batch size')
-flags.DEFINE_integer('NUM_OF_EPOCH', 50, 'number of epoch')
+flags.DEFINE_integer('NUM_OF_EPOCH', 3, 'number of epoch')
 flags.DEFINE_float('lr_value', 0.01, 'initial learning rate')
-flags.DEFINE_float('lr_decay', 0.96, 'learning rate decay')
-flags.DEFINE_integer('Check_Loss', np.repeat(5, 20), 'loss decay')
+flags.DEFINE_float('lr_decay', 0.5, 'learning rate decay')
+flags.DEFINE_multi_integer('Check_Loss', [5]*20, 'loss decay')
+
 
 # FLAGS
 FLAGS = flags.FLAGS
-FLAGS._parse_flags()
