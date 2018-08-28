@@ -36,7 +36,7 @@ x = np.array(list(vocab_processor.fit_transform(TRAIN_DOC)))
 
 ## Extract word:id mapping from the object.
 vocab_dict = vocab_processor.vocabulary_._mapping
-# len(vocab_dict) #72844
+# len(vocab_dict) #72844 근방의 숫자. data_load.data_load()에서 TRAIN_DOC이 sampling 되기 때문에 계속 바뀜
 
 # save vocabularyprocessor object
 vocab_processor.save('./Ch01_Data_load/data/VocabularyProcessor')
