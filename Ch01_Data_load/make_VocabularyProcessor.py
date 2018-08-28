@@ -31,15 +31,15 @@ max_doc_length = max([len(x.split(" ")) for x in TRAIN_DOC])
 # Create the vocabularyprocessor object, setting the max lengh of the documents.
 vocab_processor = tf.contrib.learn.preprocessing.VocabularyProcessor(max_doc_length, min_frequency=5)
 
-# save vocabularyprocessor object
-vocab_processor.save('./Ch01_Data_load/data/VocabularyProcessor')
-
 # Transform the documents using the vocabulary.
 x = np.array(list(vocab_processor.fit_transform(TRAIN_DOC)))
 
 ## Extract word:id mapping from the object.
 vocab_dict = vocab_processor.vocabulary_._mapping
 # len(vocab_dict) #72844
+
+# save vocabularyprocessor object
+vocab_processor.save('./Ch01_Data_load/data/VocabularyProcessor')
 
 
 
