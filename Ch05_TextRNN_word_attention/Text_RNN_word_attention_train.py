@@ -1,5 +1,5 @@
 ####################################################
-# Text classification with attention RNN - train (word level)
+# Text classification with RNN - train (word level)
 #  - Author: Deokseong Seo
 #  - email: heyhi16@gmail.com
 #  - git: https://github.com/DeokO
@@ -17,8 +17,8 @@ os.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'
 # Import modules
 #####################################
 from Ch01_Data_load import data_load
-from Ch05_TextRNN_word_attention.Text_RNN_word_attention_config import *
-from Ch05_TextRNN_word_attention.Text_RNN_word_attention_model import *
+from Ch04_TextRNN_word.Text_RNN_word_config import *
+from Ch04_TextRNN_word.Text_RNN_word_model import *
 information = ''
 FLAGS.WRITER += information
 
@@ -47,7 +47,7 @@ sess.run(tf.global_variables_initializer())
 
 
 
-################################################################################
+############################################################## ##################
 # Let's Train!!
 ################################################################################
 # 한 epoch 당 iteration 횟수
@@ -57,14 +57,15 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
     # i=0
     if i % Num_of_Iterlation == 0:
         epoch += 1
-        FLAGS.lr_value *= FLAGS.lr_decay
+        if epoch % 2 == 1:
+            FLAGS.lr_value *= FLAGS.lr_decay
 
     ################################################################
     # Training batch OPTIMIZE
     ################################################################
     index = utils.sampler(LABEL_POS=TRAIN_LABEL_POS, LABEL_NEG=TRAIN_LABEL_NEG, BATCH_SIZE=FLAGS.BATCH_SIZE)
     batch_input, batch_label = utils.generate_batch_word(INDEX=index, VOCAB_PROCESSOR=vocab_processor,
-                                                         DOC=TRAIN_DOC, LABEL=TRAIN_LABEL, ATTENTION=False)
+                                                         DOC=TRAIN_DOC, LABEL=TRAIN_LABEL)
     seq_length, _ = utils.length(batch_input)
 
     _ = sess.run([model.optm],
@@ -82,7 +83,7 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
     ################################################################
     if i % 10 == 0:
         ################################################################
-        # Test batch LOSS CHECK
+        # Train batch LOSS CHECK
         ################################################################
         tr_loss, tr_acc, tr_merged = sess.run([model.cross_entropy, model.accuracy, model.merge],
                                               feed_dict={model.X_idx: batch_input,
@@ -94,13 +95,12 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
                                                          model.TRAIN_PH: True})
         model.train_writer.add_summary(tr_merged, i)
 
-
         ################################################################
         # Test batch LOSS CHECK
         ################################################################
         index = utils.sampler(LABEL_POS=TEST_LABEL_POS, LABEL_NEG=TEST_LABEL_NEG, BATCH_SIZE=FLAGS.TEST_BATCH)
         batch_input, batch_label = utils.generate_batch_word(INDEX=index, VOCAB_PROCESSOR=vocab_processor,
-                                                             DOC=TEST_DOC, LABEL=TEST_LABEL, ATTENTION=False)
+                                                             DOC=TEST_DOC, LABEL=TEST_LABEL)
         seq_length, _ = utils.length(batch_input)
 
         ts_loss, ts_acc, ts_merged = sess.run([model.cross_entropy, model.accuracy, model.merge],
@@ -118,8 +118,8 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
         ################################################################
         print("Iter: {iter:08} / Epoch: {EP} |##| LR: {LR:0.15f} |##|  tr_LOSS: {tr_LOSS:0.8f} |##|  tr_acc: {tr_ACC:0.8f} |##|  ts_LOSS: {ts_loss:0.8f} |##|  ts_acc: {ts_acc:0.8f}".format(
                 iter=i, EP=epoch, LR=FLAGS.lr_value, tr_LOSS=tr_loss, tr_ACC=tr_acc, ts_loss=ts_loss, ts_acc=ts_acc))
-        FLAGS.Check_Loss = np.delete(FLAGS.Check_Loss, [0])
-        FLAGS.Check_Loss = np.append(FLAGS.Check_Loss, tr_loss)
+        FLAGS.Check_Loss = FLAGS.Check_Loss[1:]
+        FLAGS.Check_Loss.append(round(tr_loss, 4))
         print(FLAGS.Check_Loss)
 
 
@@ -132,9 +132,8 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
 # Save parameters
 ################################################################################
 # Save Weights
-if "./Saver/{}".format(FLAGS.WRITER) not in os.listdir("./Saver"):
+if FLAGS.WRITER not in os.listdir("./Saver"):
     os.makedirs("./Saver/{}".format(FLAGS.WRITER))
 saver = tf.train.Saver()
 saver.save(sess, "./Saver/{}/{}.ckpt".format(FLAGS.WRITER, FLAGS.WRITER))
-# C:/Users/DeokseongSeo/Desktop/{}.ckpt
 
