@@ -63,7 +63,7 @@ for i in range(int(len(TEST_DOC) / FLAGS.TEST_BATCH)+1):
 
     index = np.unique(np.clip(np.arange(i*FLAGS.TEST_BATCH, (i+1)*FLAGS.TEST_BATCH), a_min=0, a_max=len(TEST_DOC)-1))
     batch_input, batch_label = utils.generate_batch_word(INDEX=index, VOCAB_PROCESSOR=vocab_processor,
-                                                         DOC=TEST_DOC, LABEL=TEST_LABEL, ATTENTION=False)
+                                                         DOC=TEST_DOC, LABEL=TEST_LABEL)
     seq_length, _ = utils.length(batch_input)
 
     ts_acc, y_logit = sess.run([model.accuracy, model.y_logits],
@@ -90,6 +90,6 @@ print('AUROC: {},        acc: {} '.format(metrics.auc(fpr, tpr), (cm[0, 0]+cm[1,
 
 
 
-# [[72855 19721]
-#  [12750 41595]]
-# AUROC: 0.7761814130451271,        acc: 0.778990069493129
+# [[33382  7808]
+#  [ 7759 24647]]
+# AUROC: 0.7855042287359318,        acc: 0.788480352193054
