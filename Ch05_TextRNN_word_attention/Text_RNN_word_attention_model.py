@@ -77,17 +77,14 @@ class MODEL():
         ##########################################
         # Recurrent layer
         ##########################################
-        with tf.variable_scope('LSTMcell'):
-            # 여러개의 셀을 조합한 RNN 셀을 생성합니다.
-            multi_cells = tf.contrib.rnn.MultiRNNCell(
-                [utils.LSTM_cell(FLAGS.RNN_HIDDEN_DIMENSION, self.Dropout_Rate1, self.Dropout_Rate2) for _ in range(FLAGS.N_LAYERS)])
-
+        with tf.variable_scope('{}_cell'.format(FLAGS.RNN_CELL)):
+            multi_cells = utils.RNN_structure(FLAGS.RNN_CELL, FLAGS.RNN_HIDDEN_DIMENSION, self.Dropout_Rate1, self.Dropout_Rate2, FLAGS.N_LAYERS)
             # RNN 신경망을 생성 (SEQ를 통해 매 sentence의 길이까지만 계산을 해 효율성 증대)
-            outputs, _states = tf.nn.dynamic_rnn(cell=multi_cells, inputs=self.X, dtype=tf.float32) #sequence_length=self.SEQ,
+            outputs, _states = tf.nn.dynamic_rnn(cell=multi_cells, inputs=self.X, sequence_length=self.SEQ, dtype=tf.float32)
 
-            # Attention
-            with tf.variable_scope('Attention'):
-                self.att_matrix, self.att_alpha = utils.attention(INPUTS=outputs, ATTENTION_SIZE=FLAGS.ATTENTION_SIZE, SEQ=self.SEQ, time_major=False, return_alphas=True)
+        # Attention
+        with tf.variable_scope('Attention'):
+            self.att_matrix, self.att_alpha = utils.attention(INPUTS=outputs, ATTENTION_SIZE=FLAGS.ATTENTION_SIZE, SEQ=self.SEQ, time_major=False, return_alphas=True)
 
 
         ##########################################
