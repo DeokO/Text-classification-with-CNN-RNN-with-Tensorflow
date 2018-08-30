@@ -77,9 +77,8 @@ class MODEL():
         ##########################################
         # Recurrent layer
         ##########################################
-        multi_cells = utils.RNN_structure(FLAGS.RNN_CELL, FLAGS.RNN_HIDDEN_DIMENSION, self.Dropout_Rate1, self.Dropout_Rate2, FLAGS.N_LAYERS)
-
-        with tf.variable_scope('RNN_output'):
+        with tf.variable_scope('{}_cell'.format(FLAGS.RNN_CELL)):
+            multi_cells = utils.RNN_structure(FLAGS.RNN_CELL, FLAGS.RNN_HIDDEN_DIMENSION, self.Dropout_Rate1, self.Dropout_Rate2, FLAGS.N_LAYERS)
             # RNN 신경망을 생성 (SEQ를 통해 매 sentence의 길이까지만 계산을 해 효율성 증대)
             self.outputs, _states = tf.nn.dynamic_rnn(cell=multi_cells, inputs=self.X, sequence_length=self.SEQ, dtype=tf.float32)
 
