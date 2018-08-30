@@ -29,11 +29,12 @@ flags.DEFINE_integer('MAXLEN', 22, 'max length of document')
 flags.DEFINE_integer('NUM_OF_CLASS', 2, 'positive, negative')
 
 # Parameter
+flags.DEFINE_string('RNN_CELL', 'LSTM', 'RNN cell default LSTM')
 flags.DEFINE_integer('RNN_HIDDEN_DIMENSION', 256, 'RNN hidden dimension')
 flags.DEFINE_integer('FC_HIDDEN_DIMENSION', 256, 'FC hidden dimension')
-flags.DEFINE_float('Dropout_Rate1', 0.8, 'Dropout_Rate1')
-flags.DEFINE_float('Dropout_Rate2', 0.8, 'Dropout_Rate2')
-flags.DEFINE_integer('N_LAYERS', 2, 'The number of layers')
+flags.DEFINE_float('Dropout_Rate1', 0.7, 'Dropout_Rate1')
+flags.DEFINE_float('Dropout_Rate2', 0.7, 'Dropout_Rate2')
+flags.DEFINE_integer('N_LAYERS', 3, 'The number of layers')
 
 # Save
 flags.DEFINE_string('WRITER', 'Text_RNN_word', 'saver name')
