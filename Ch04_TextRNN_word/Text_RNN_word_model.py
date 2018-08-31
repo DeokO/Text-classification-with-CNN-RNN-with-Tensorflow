@@ -1,9 +1,9 @@
 ####################################################
-# Text classification with RNN - model (character level)
+# Text classification with RNN - model (word level)
 #  - Author: Deokseong Seo
 #  - email: heyhi16@gmail.com
 #  - git: https://github.com/DeokO
-#  - Date: 2018.01.07.
+#  - Date: 2018.01.19.
 ####################################################
 
 
@@ -13,8 +13,7 @@
 #####################################
 import gc
 gc.collect()
-import tensorflow as tf
-from Ch03_TextRNN.Text_RNN_config import *
+from Ch04_TextRNN_word.Text_RNN_word_config import *
 import Ch01_Data_load.utils as utils
 
 
@@ -24,13 +23,12 @@ import Ch01_Data_load.utils as utils
 ################################################################################
 class MODEL():
 
-    def __init__(self, sess, JM, FLAGS):
+    def __init__(self, sess, FLAGS):
 
         ####################################################
         # Jaso mapping
         ####################################################
         self.sess = sess
-        self.JM = JM
 
         ####################################################
         # Set placeholders
@@ -52,15 +50,13 @@ class MODEL():
     # Set placeholder
     ########################################################
     def set_placeholders(self):
-        self.X_Onehot = tf.placeholder(dtype=tf.string, shape=[None, FLAGS.INPUT_WIDTH])
-        self.X = tf.placeholder(tf.float32, [None, FLAGS.INPUT_WIDTH, FLAGS.INPUT_DEPTH])
+        self.X_idx = tf.placeholder(dtype=tf.int32, shape=[None, FLAGS.MAXLEN])
         self.Y = tf.placeholder(tf.float32, [None, FLAGS.NUM_OF_CLASS])
         self.SEQ = tf.placeholder(tf.int32, [None])
         self.LEARNING_RATE = tf.placeholder(tf.float32)
         self.Dropout_Rate1 = tf.placeholder(tf.float32)
         self.Dropout_Rate2 = tf.placeholder(tf.float32)
         self.TRAIN_PH = tf.placeholder(tf.bool)
-        self.jaso_Onehot = self.JM.string_to_index(self.X_Onehot)
 
 
     ########################################################
@@ -69,19 +65,25 @@ class MODEL():
     def set_network(self):
 
         ##########################################
+        # Embedding
+        ##########################################
+        with tf.variable_scope('Embedding'):
+            self.W = tf.get_variable(name='embedding_matrix',
+                                     shape=[FLAGS.VOCAB_SIZE, FLAGS.EMBEDDING_SIZE],
+                                     initializer=tf.random_normal_initializer(stddev=0.1))
+            self.X = tf.nn.embedding_lookup(self.W, self.X_idx)
+
+
+        ##########################################
         # Recurrent layer
         ##########################################
-        with tf.variable_scope('LSTMcell'):
-            # 여러개의 셀을 조합한 RNN 셀을 생성합니다.
-            multi_cells = tf.contrib.rnn.MultiRNNCell(
-                [utils.LSTM_cell(FLAGS.RNN_HIDDEN_DIMENSION, self.Dropout_Rate1, self.Dropout_Rate2) for _ in range(FLAGS.N_LAYERS)])
-
+        with tf.variable_scope('{}_cell'.format(FLAGS.RNN_CELL)):
+            multi_cells = utils.RNN_structure(FLAGS.RNN_CELL, FLAGS.RNN_HIDDEN_DIMENSION, self.Dropout_Rate1, self.Dropout_Rate2, FLAGS.N_LAYERS)
             # RNN 신경망을 생성 (SEQ를 통해 매 sentence의 길이까지만 계산을 해 효율성 증대)
-            self.outputs, _states = tf.nn.dynamic_rnn(cell=multi_cells, inputs=self.X, dtype=tf.float32)  # sequence_length=self.SEQ,
+            self.outputs, _states = tf.nn.dynamic_rnn(cell=multi_cells, inputs=self.X, sequence_length=self.SEQ, dtype=tf.float32)
 
             # 마지막에 해당하는 결과물을 가져옴 (utils의 last_relevant 함수를 이용)
             self.rnn_outputs = utils.last_relevant(self.outputs, self.SEQ)
-
 
         ##########################################
         # Fully connected network
@@ -93,7 +95,6 @@ class MODEL():
             FC_act2 = tf.nn.relu(tf.layers.batch_normalization(FC2, momentum=0.9, training=self.TRAIN_PH))
 
             self.y_logits = tf.contrib.layers.fully_connected(FC_act2, FLAGS.NUM_OF_CLASS, activation_fn=None)
-
 
 
     ########################################################
