@@ -1,5 +1,5 @@
 ####################################################
-# Text classification with RNN - train (word level)
+# Text classification with attention RNN - train (word level)
 #  - Author: Deokseong Seo
 #  - email: heyhi16@gmail.com
 #  - git: https://github.com/DeokO
@@ -17,8 +17,8 @@ os.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'
 # Import modules
 #####################################
 from Ch01_Data_load import data_load
-from Ch04_TextRNN_word.Text_RNN_word_config import *
-from Ch04_TextRNN_word.Text_RNN_word_model import *
+from Ch05_TextRNN_word_attention.Text_RNN_word_attention_config import *
+from Ch05_TextRNN_word_attention.Text_RNN_word_attention_model import *
 information = ''
 FLAGS.WRITER += information
 
@@ -47,7 +47,7 @@ sess.run(tf.global_variables_initializer())
 
 
 
-############################################################## ##################
+################################################################################
 # Let's Train!!
 ################################################################################
 # 한 epoch 당 iteration 횟수
@@ -57,8 +57,7 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
     # i=0
     if i % Num_of_Iterlation == 0:
         epoch += 1
-        if epoch % 2 == 1:
-            FLAGS.lr_value *= FLAGS.lr_decay
+        FLAGS.lr_value *= FLAGS.lr_decay
 
     ################################################################
     # Training batch OPTIMIZE
@@ -94,6 +93,7 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
                                                          model.Dropout_Rate2: 1,
                                                          model.TRAIN_PH: True})
         model.train_writer.add_summary(tr_merged, i)
+
 
         ################################################################
         # Test batch LOSS CHECK
@@ -136,4 +136,5 @@ if FLAGS.WRITER not in os.listdir("./Saver"):
     os.makedirs("./Saver/{}".format(FLAGS.WRITER))
 saver = tf.train.Saver()
 saver.save(sess, "./Saver/{}/{}.ckpt".format(FLAGS.WRITER, FLAGS.WRITER))
+
 
