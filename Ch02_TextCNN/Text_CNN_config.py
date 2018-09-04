@@ -28,7 +28,7 @@ flags.DEFINE_integer('NUM_OF_CLASS', 2, 'positive, negative')
 
 # Parameter
 flags.DEFINE_integer('HIDDEN_DIMENSION', 256, 'hidden dimension')
-flags.DEFINE_list('CONV_KERNEL_WIDTH', [19, 13], 'kernel height')
+flags.DEFINE_list('CONV_KERNEL_WIDTH', [19, 13], 'kernel width')
 
 # Save
 flags.DEFINE_string('WRITER', 'Text_CNN', 'saver name')
