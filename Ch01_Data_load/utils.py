@@ -54,6 +54,21 @@ def RNN_cell(n_hidden, Dropout_Rate1, Dropout_Rate2):
     cell = tf.contrib.rnn.DropoutWrapper(cell, input_keep_prob=Dropout_Rate1, output_keep_prob=Dropout_Rate2)
     return cell
 
+def RNN_structure(cell_type, n_hidden, Dropout_Rate1, Dropout_Rate2, n_layers):
+    if cell_type == 'GRU':
+        # 여러개의 셀을 조합한 RNN 셀을 생성합니다.
+        multi_cells = tf.contrib.rnn.MultiRNNCell(
+            [GRU_cell(n_hidden, Dropout_Rate1, Dropout_Rate2) for _ in range(n_layers)])
+    elif cell_type == 'LSTM':
+        multi_cells = tf.contrib.rnn.MultiRNNCell(
+            [LSTM_cell(n_hidden, Dropout_Rate1, Dropout_Rate2) for _ in range(n_layers)])
+    elif cell_type == 'RNN':
+        multi_cells = tf.contrib.rnn.MultiRNNCell(
+            [RNN_cell(n_hidden, Dropout_Rate1, Dropout_Rate2) for _ in range(n_layers)])
+    else:
+        return None
+    return multi_cells
+
 
 
 ################################################################################
@@ -128,44 +143,24 @@ def sampler(LABEL_POS, LABEL_NEG, BATCH_SIZE):
     return np.r_[pos, neg]
 
 
-def generate_batch_jaso(INDEX, MODEL, DOC, LABEL, MAXLEN, SESS, ATTENTION):
-    if ATTENTION:
-        jaso_splitted = jmu.jaso_split(DOC[INDEX], MAXLEN=MAXLEN)
-        seq_len = np.array(list(map(lambda x: find_length(x), jaso_splitted)))
-        seq_len = np.ceil(seq_len / (2 ** MODEL.MAX_POOL_TIME)).astype(np.int32)
-        batch_input = SESS.run(MODEL.jaso_Onehot, {MODEL.X_Onehot: jaso_splitted})
-        batch_label = LABEL[INDEX]
+def generate_batch_jaso(INDEX, MODEL, DOC, LABEL, MAXLEN, SESS):
+    jaso_splitted = jmu.jaso_split(DOC[INDEX], MAXLEN=MAXLEN)
+    _input = SESS.run(MODEL.jaso_Onehot, {MODEL.X_Onehot: jaso_splitted})
+    _, del_list = length(_input)
+    _label = LABEL[INDEX]
+    batch_input = np.delete(_input, del_list, axis=0)
+    batch_label = np.delete(_label, del_list, axis=0)
+    return batch_input, batch_label
 
-        return batch_input, batch_label, seq_len
 
-    else:
-        jaso_splitted = jmu.jaso_split(DOC[INDEX], MAXLEN=MAXLEN)
-        _input = SESS.run(MODEL.jaso_Onehot, {MODEL.X_Onehot: jaso_splitted})
-        _, del_list = length(_input)
-        _label = LABEL[INDEX]
-        batch_input = np.delete(_input, del_list, axis=0)
-        batch_label = np.delete(_label, del_list, axis=0)
+def generate_batch_word(INDEX, VOCAB_PROCESSOR, DOC, LABEL):
+    _input = np.array(list(VOCAB_PROCESSOR.transform(DOC[INDEX])))
+    _, del_list = length(_input)
+    _label = LABEL[INDEX]
+    batch_input = np.delete(_input, del_list, axis=0)
+    batch_label = np.delete(_label, del_list, axis=0)
 
-        return batch_input, batch_label
-
-def generate_batch_word(INDEX, VOCAB_PROCESSOR, DOC, LABEL, ATTENTION):
-    if ATTENTION:
-        # jaso_splitted = jmu.jaso_split(DOC[START:END], MAXLEN=MAXLEN)
-        # seq_len = np.array(list(map(lambda x: find_length(x), jaso_splitted)))
-        # seq_len = np.ceil(seq_len / (2 ** MODEL.MAX_POOL_TIME)).astype(np.int32)
-        # batch_input = SESS.run(MODEL.jaso_Onehot, {MODEL.X_Onehot: jaso_splitted})
-        # batch_label = LABEL[START:END]
-        print()
-        # return batch_input, batch_label, seq_len
-
-    else:
-        _input = np.array(list(VOCAB_PROCESSOR.transform(DOC[INDEX])))
-        _, del_list = length(_input)
-        _label = LABEL[INDEX]
-        batch_input = np.delete(_input, del_list, axis=0)
-        batch_label = np.delete(_label, del_list, axis=0)
-
-        return batch_input, batch_label
+    return batch_input, batch_label
 
 
 
@@ -192,25 +187,12 @@ def MINMAX(Data):
 ################################################################################
 # lookup table for jaso one-hot
 ################################################################################
-def lookup_JM(MAXLEN, IMAGE_WIDTH, IMAGE_DEPTH):
+def lookup_JM(WIDTH, DEPTH):
     MAPPING_PATH = './Ch01_Data_load/data/dict.csv'
     lookup = pd.read_csv(MAPPING_PATH, encoding='cp949')
     keys = list(lookup.iloc[:, 0])
     values = list(lookup.iloc[:, 1])
-    JM = jmu.JasoMapping(MAXLEN=MAXLEN, WIDTH=IMAGE_WIDTH, DEPTH=IMAGE_DEPTH, MAPPING_KEY=keys, MAPPING_VALUE=values)
-    return JM
-
-
-
-################################################################################
-# lookup table for word one-hot
-################################################################################
-def lookup_WM(MAXLEN, IMAGE_WIDTH, IMAGE_DEPTH):
-    MAPPING_PATH = './Ch01_Data_load/data/vocab.npy'
-    lookup = np.load(MAPPING_PATH)
-    keys = list(lookup.iloc[:, 0])
-    values = list(lookup.iloc[:, 1])
-    JM = jmu.JasoMapping(MAXLEN=MAXLEN, WIDTH=IMAGE_WIDTH, DEPTH=IMAGE_DEPTH, MAPPING_KEY=keys, MAPPING_VALUE=values)
+    JM = jmu.JasoMapping(WIDTH=WIDTH, DEPTH=DEPTH, MAPPING_KEY=keys, MAPPING_VALUE=values)
     return JM
 
 
@@ -220,7 +202,6 @@ def lookup_WM(MAXLEN, IMAGE_WIDTH, IMAGE_DEPTH):
 ################################################################################
 def Tokenize(data):
     tokenizer = RegexTokenizer()
-
     output = list(map(lambda x: ' '.join(tokenizer.tokenize(x)), data))
     return output
 
@@ -260,5 +241,3 @@ def attention(INPUTS, ATTENTION_SIZE, SEQ, time_major=False, return_alphas=False
         return output
     else:
         return output, alphas
-
-
