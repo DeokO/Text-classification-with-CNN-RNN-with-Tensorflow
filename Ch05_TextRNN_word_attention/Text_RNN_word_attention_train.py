@@ -84,6 +84,11 @@ for i in range(Num_of_Iterlation * FLAGS.NUM_OF_EPOCH):
         ################################################################
         # Train batch LOSS CHECK
         ################################################################
+        index = utils.sampler(LABEL_POS=TRAIN_LABEL_POS, LABEL_NEG=TRAIN_LABEL_NEG, BATCH_SIZE=FLAGS.BATCH_SIZE)
+        batch_input, batch_label = utils.generate_batch_word(INDEX=index, VOCAB_PROCESSOR=vocab_processor,
+                                                             DOC=TRAIN_DOC, LABEL=TRAIN_LABEL)
+        seq_length, _ = utils.length(batch_input)
+
         tr_loss, tr_acc, tr_merged = sess.run([model.cross_entropy, model.accuracy, model.merge],
                                               feed_dict={model.X_idx: batch_input,
                                                          model.Y: batch_label,
