@@ -6,7 +6,7 @@ Markdown==2.6.11
 numpy==1.15.1
 pandas==0.23.4
 protobuf==3.6.1
-psutil==5.4.7
+psutil==5.6.6
 python-dateutil==2.7.3
 pytz==2018.5
 scikit-learn==0.19.2
