@@ -15,6 +15,6 @@ six==1.11.0
 sklearn==0.0
 soynlp==0.0.46
 tensorboard==1.10.0
-tensorflow-gpu==1.8.0
+tensorflow-gpu==2.3.1
 termcolor==1.1.0
 Werkzeug
